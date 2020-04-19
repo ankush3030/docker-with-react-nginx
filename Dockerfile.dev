@@ -1,0 +1,17 @@
+# Set the base image
+FROM node:alpine
+
+# Specify the base folder under which the files will be copied
+WORKDIR /home/ankushshal/apps/docker-with-react-nginx
+
+# add the dependencies 
+# now we dont want to run npm install everytime we make a change to code
+# so adding command COPY ./package.json ./ 
+# now first package.json is copied inside /usr/app and then npm install 
+# then other files which is src code
+COPY package.json .
+RUN npm install
+COPY . .
+
+# specify the run command
+CMD [ "npm", "start" ]

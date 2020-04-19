@@ -1,0 +1,28 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    # In defualt profile of Virtual Box, which is used by docker toolbox, I mapped 
+    # E:\dev\UdemyDev\docker\ to /docker as only C:/Users folder is shared by default 
+    volumes:
+      - /docker/docker-with-react-nginx/src:/home/ankushshal/apps/docker-with-react-nginx/src:rw
+      - /docker/docker-with-react-nginx/public:/home/ankushshal/apps/docker-with-react-nginx/public:rw
+    # When you run react app in docker compose it exits immediately this is a bug in create react app
+    # to fix this use following
+    stdin_open: true
+    # Jest watchers are broken on all windows version hence live reloading of the tests will not work on 
+    # windows host OS
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      # In defualt profile of Virtual Box, which is used by docker toolbox, I mapped 
+      # E:\dev\UdemyDev\docker\ to /docker as only C:/Users folder is shared by default 
+    volumes:
+      - /docker/docker-with-react-nginx/src:/home/ankushshal/apps/docker-with-react-nginx/src:rw
+      - /docker/docker-with-react-nginx/public:/home/ankushshal/apps/docker-with-react-nginx/public:rw
+    command: ["npm", "run", "test"]
